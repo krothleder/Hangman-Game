@@ -1,0 +1,30 @@
+body {
+ 
+ background: url("../images/bkgnd.jpg") no-repeat;
+ 
+}
+
+
+.logo {
+
+	text-align: center;
+    font-family: 'Merriweather', sans-serif;
+	color: black;
+
+}
+
+
+/*.audio {
+
+text-align: center;
+
+
+}*/
+
+.container {
+ text-align: center;
+ background-color: clear;
+ color:black;
+ font-size: 20px;
+ font-family: 'Merriweather', sans-serif;
+}
