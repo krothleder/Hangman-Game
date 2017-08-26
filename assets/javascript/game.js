@@ -2,21 +2,24 @@
     //sets array full of words that users will have to guess 
     var wordsList = ["helpless","satisfied","burn","hamilton","yorktown"]
 
-    //initializes the wrong letters guessed to an empty string
+    //initializes the current work chosen to an empty string
     var currentWord = "";
 
+    //initializes the split word to an empty array that will be filled with the induvidual letters in the chosen word
     var splitCurrentWord = [];
 
+    //initializes the blanks in chosen word to0
     var blanks = 0;
 
     var correctGuessesAndBlanks = [];
 
+    //initializes the wrong letters guessed to an empty string
     var wrongGuesses =[];
 
 
     //GAME COUNTERS
-    //initializes guesses left to 15
-    var guessesLeft =15;
+    //initializes guesses left to 10
+    var guessesLeft =10;
 
     //initializes wins to 0
     var wins=0;
@@ -28,12 +31,12 @@
     //FUNCTIONS
 
     function startGame() {
-      // Reset the guesses back to 0.
-      guessesLeft = 15;
+      // Reset the guesses left back to 10.
+      guessesLeft = 10;
 
-      // Solution is chosen randomly from wordList.
+      // Current word is chosen randomly from wordsList.
       currentWord = wordsList[Math.floor(Math.random() * wordsList.length)];
-      // The word is broken into individual letters.
+      // The word is broken into individual letters and placed in array.
       splitCurrentWord = currentWord.split("");
       // Count the number of letters in the word.
       blanks = splitCurrentWord.length;
@@ -42,22 +45,22 @@
       console.log(currentWord);
       console.log(splitCurrentWord);
 
-      // CRITICAL LINE - Here we *reset* the guess and success array at each round.
+      //Reset the guesses and success array for new round.
       correctGuessesAndBlanks = [];
-      // CRITICAL LINE - Here we *reset* the wrong guesses from the previous round.
+      //Reset the wrong guesses from the previous round.
       wrongGuesses = [];
 
-      // Fill up the blanksAndSuccesses list with appropriate number of blanks.
+      // Fill up the correctGuessesAndBlanks list with appropriate number of blanks.
       // This is based on number of letters in solution.
       for (var i = 0; i < blanks; i++) {
         correctGuessesAndBlanks.push("_");
       }
 
-      // Print the initial blanks in console.
+      // Print the initial blanks in console.(for testing)
       console.log(correctGuessesAndBlanks);
 
 
-      // // Reprints the guessesLeft to 9
+      // // Reprints the guessesLeft to 10
       document.getElementById("guesses-left").innerHTML = guessesLeft;
 
       // // Prints the blanks at the beginning of each round in the HTML
@@ -71,21 +74,22 @@
 
 
     function checkLetter(letter){
+        //initialize a boolean to false so lettter in word is first set to false
         var letterInWord = false;
 
           // Check if a letter exists inside the split word at all.
         for (var i = 0; i < blanks; i++) {
           if (letter === currentWord[i]) {
-            // If the letter exists then toggle this boolean to true. This will be used in the next step.
+            // If the letter exists then set letterInWord to true. 
             letterInWord = true;
           }
         }
 
-        // If the letter exists somewhere in the word, then figure out exactly where.
+        // If the letter exists somewhere in the word, then find exactly where.
         if (letterInWord) {
           // Loop through the word.
           for (i = 0; i < blanks; i++) {
-            // Populate the blanksAndSuccesses with every instance of the letter.
+            // Populate the correctGuessesAndBlanks with every instance of the letter.
             if (letter === currentWord[i]) {
               // Here we set the specific space in blanks and letter equal to the letter when there is a match.
               correctGuessesAndBlanks[i] = letter;
@@ -93,12 +97,19 @@
           }
         }
 
-        // If the letter doesn't exist
         else {
-          // add the letter to the list of wrong letters, and we subtract one of the guesses.
-          wrongGuesses.push(letter);
-          guessesLeft--;
+              //if letter guess has already been made alert player that letter is already guessed
+              if(wrongGuesses.includes(letter)){
+                alert("Letter already guessed");
+              }
+              else{
+                 // else if new guess is maded add the letter to the list of wrong letters, and subtract one of the guesses.
+                wrongGuesses.push(letter);
+                guessesLeft--;
+              }
         }
+
+        //Logs for testing
 
         console.log(correctGuessesAndBlanks);
         console.log(wrongGuesses);
@@ -107,14 +118,15 @@
     
 
 
+
     function display(){
-       // // Reprints the guessesLeft to 9
+       // // Displays the guessesLeft to page
       document.getElementById("guesses-left").innerHTML = guessesLeft;
 
-      // // Prints the blanks at the beginning of each round in the HTML
+      // // Displays the blanks to page
       document.getElementById("word-blanks").innerHTML = correctGuessesAndBlanks.join(" ");
 
-      // // Clears the wrong guesses from the previous round
+      // // Displays the wrong guesses to page
       document.getElementById("wrong-guesses").innerHTML = wrongGuesses.join(" ");
 
     }
@@ -146,8 +158,10 @@
     }
 
 
+    //main function of game starts the game and on a key event begins the game logic
 
     startGame();
+
 
     document.onkeyup = function(event) {
       // Converts all key clicks to lowercase letters.
